@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import usersReducer from './slices/slice';
 
-const persistanceMiddleware = (store) => (next) => (action) => {
+const persistanceLocalStorageMiddleware = (store) => (next) => (action) => {
     console.log(store.getState())
-    console.log(action) 
+    console.log('>ACTION',action) 
     next(action)
-     console.log(store.getState())
+    localStorage.setItem('reduxState', JSON.stringify(store.getState()))
  
  }
 
@@ -13,7 +13,7 @@ export const store = configureStore({
     reducer: {
         users: usersReducer,
     },
-    middleware: [persistanceMiddleware]
+    middleware: [persistanceLocalStorageMiddleware]
 });
 
 export type RootState = ReturnType<typeof store.getState>;
